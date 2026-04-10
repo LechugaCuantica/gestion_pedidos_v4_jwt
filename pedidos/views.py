@@ -15,8 +15,7 @@ from django.db import models
 
 from productos.models import Productos
 
-locale.setlocale(locale.LC_ALL, 'es_ES.UTF-8')
-
+locale.setlocale(locale.LC_ALL, 'C.UTF-8')
 # Create your views here.
 
 def listar_pedidos(request: HttpRequest):
