@@ -19,10 +19,16 @@ dotenv.load_dotenv()
 
 from productos.models import Productos
 
-if os.getenv('DEBUG') == 'False':
-    locale.setlocale(locale.LC_ALL, 'C.UTF-8')
-else:
-    locale.setlocale(locale.LC_ALL, 'es_ES.UTF-8')
+def set_spanish_locale():
+    for loc in ['es_ES.UTF-8', 'es_ES', 'C.UTF-8', 'C']:
+        try:
+            locale.setlocale(locale.LC_ALL, loc)
+            print(f"Locale usado: {loc}")
+            break
+        except locale.Error:
+            continue
+
+set_spanish_locale()
 # Create your views here.
 
 def listar_pedidos(request: HttpRequest):
