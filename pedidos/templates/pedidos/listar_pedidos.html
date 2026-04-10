@@ -1,0 +1,202 @@
+{% extends "base.html" %} {% load humanize %} {% block content %}
+    <div class="bg-white shadow-md rounded-xl p-6 mb-6 border border-blue-100 mt-10">
+      
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        
+        <div>
+          <h1 class="text-3xl font-bold text-blue-900">Gestión de Pedidos</h1>
+          <p class="text-slate-500 mt-1">Administra, crea y edita la información fácilmente</p>
+        </div>
+
+        <a href="{% url "crear_pedido" %}" class="rounded  border border-blue-500 bg-linear-to-r from-blue-600 to-blue-900 hover:border-blue-900 hover:to-blue-950 hover:from-blue-900 transition-colors duration-200 cursor-pointer py-3 px-9  text-white"> <i class="fa-solid fa-plus"></i> Crear pedido</a>
+
+      </div>
+    </div>
+    <div class="bg-white shadow-lg rounded-xl border border-blue-100">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between p-5 border-b border-slate-200 gap-4">
+        <h2 class="text-lg font-semibold text-blue-800">Lista de pedidos</h2>
+      </div>
+        <table class="min-w-full leading-normal">
+          <thead class="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                class="px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal"
+              >
+                ID
+              </th>
+              <th
+                scope="col"
+                class="px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal"
+              >
+                pedido
+              </th>
+              <th
+                scope="col"
+                class="px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal"
+              >
+                Fecha
+              </th>
+              <th
+                scope="col"
+                class="px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal"
+              >
+                Estado
+              </th>
+              <th
+                scope="col"
+                class="px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal"
+              >
+                Total del pedido
+              </th>
+              <th
+                scope="col"
+                class="px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal"
+              ></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for pedido in page_obj %}
+            <tr>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">{{ pedido.id }}</p>
+              </td>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                  {{ pedido.cliente }}
+                </p>
+              </td>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                  {{ pedido.fecha }}
+                </p>
+              </td>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                    {% if pedido.estado == 'pendiente' %}
+                    <span class="px-3 py-1 text-sm font-semibold rounded-full bg-blue-50 text-blue-700 border border-blue-200 uppercase">{{pedido.estado}}</span>      
+                {% elif pedido.estado == 'enviado' %}
+                    <span class="px-3 py-1 text-sm font-semibold rounded-full bg-blue-100 text-blue-800 uppercase">{{pedido.estado}}</span>      
+                    {% elif pedido.estado == 'entregado' %}
+                    <span class="px-3 py-1 text-sm font-semibold rounded-full bg-linear-to-r from-blue-500 to-blue-700 text-white shadow-sm uppercase">{{pedido.estado}}</span>      
+                  {% endif %}
+                  
+                </p>
+              </td>
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    $ {{ pedido.total_pedido|intcomma }}
+                  </td>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <div class="flex justify-center m-2">
+            <a href="{% url "ver_pedido" pedido.id %}" class="text-base  rounded-r-none  hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-blue-700 hover:text-blue-100 bg-blue-100 text-blue-700 border duration-200 ease-in-out border-blue-600 transition">
+                <div class="flex leading-5">
+                    <i class="fa-solid fa-eye mt-1 me-1"></i>
+                    Ver
+                  </div>
+            </a>
+            <button onclick="onUpdate('{% url "actualizar_pedido" pedido.id %}')" class="text-base  rounded-l-none rounded-r-none  hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-blue-700 hover:text-blue-100 bg-blue-100 text-blue-700 border duration-200 ease-in-out border-blue-600 transition">
+                <div class="flex leading-5">
+                    <i class="fa-solid fa-pen-to-square mt-1 me-1"></i>
+                    Editar
+                  </div>
+            </button>
+            <button onclick="onReportPdf('{% url 'reporte_pdf' pedido.id %}')" class="text-base  rounded-l-none  hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-blue-700 hover:text-blue-100 bg-blue-100 text-blue-700 border duration-200 ease-in-out border-blue-600 transition">
+                <div class="flex leading-5">
+                  <i class="fa-solid fa-file-arrow-down mt-1 me-1"></i>
+                    PDF
+                  </div>
+                </button>
+        </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td
+                colspan="7"
+                class="text-center text-2xl text-blue-600 font-bold"
+              >
+                No hay pedidos registrados.
+              </td>
+            </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
+        <div
+          class="px-5 bg-white py-5 rounded-b-xl flex flex-col xs:flex-row items-end xs:justify-between"
+        >
+          <div class="flex items-center">
+            {% if page_obj.has_previous %}
+            <a
+              href="?page={{ page_obj.previous_page_number }}"
+              type="button"
+              class="text-base  rounded-r-none hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-blue-700 hover:text-blue-100 bg-blue-100 text-blue-700 border duration-200 ease-in-out border-blue-600 transition"
+            >
+              <i class="fa-solid fa-chevron-left mt-1.5 me-1"></i>
+              Anterior
+            </a>
+            {% endif %} {% for i in page_obj.paginator.page_range %}
+            <a
+              href="?page={{ i }}"
+              type="button"
+              class="text-base  rounded-l-none rounded-r-none  hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer {% if page_obj.number == i %} bg-blue-700 text-blue-100 {% else %} hover:bg-blue-700 hover:text-blue-100 bg-blue-100 text-blue-700 {% endif %}  border duration-200 ease-in-out border-blue-600 transition"
+            >
+              {{ i }}
+            </a>
+            {% endfor %} {% if page_obj.has_next %}
+            <a
+              href="?page={{ page_obj.next_page_number }}"
+              type="button"
+              class="text-base  rounded-l-none   hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-blue-700 hover:text-blue-100 bg-blue-100 text-blue-700 border duration-200 ease-in-out border-blue-600 transition"
+            >
+            Siguiente
+              <i class="fa-solid fa-chevron-right mt-1.5 ml-1"></i>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+    <div class="text-center mt-5">
+      {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+    </div>
+
+
+<script>
+    function onReportPdf(url){
+        Swal.fire({
+        title: 'Seguro que quieres generar el reporte PDF?',
+        icon: "warning",
+        showCancelButton: true,
+        background: "#f1f5f9",
+        confirmButtonColor: "#00a13d",
+        cancelButtonColor: "#c6c9cb",
+        confirmButtonText: "Si, Generar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = url
+        }
+    });
+  }
+    
+function onUpdate(url){
+          Swal.fire({
+        title: '¿Seguro que quieres actualizar este pedido?',
+        icon: "warning",
+        showCancelButton: true,
+        background: "#f1f5f9",
+        confirmButtonColor: "#00a13d",
+        cancelButtonColor: "#c6c9cb",
+        confirmButtonText: "Si, Actualizar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = url
+        }
+    });
+}
+
+
+</script>
+{% endblock content %}

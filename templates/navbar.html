@@ -1,0 +1,23 @@
+    <nav class="header sticky top-0 bg-white shadow-md flex items-center justify-between px-8 py-02 z-100">
+        <h1 class="w-3/12 text-2xl font-bold">
+            <a href="{% url "dashboard" %}" class="h-6 w-auto hover:text-blue-500 text-blue-900 duration-200">
+              Gestión pedidos
+            </a>
+        </h1>
+
+        <nav class="nav font-semibold text-lg">
+            <div class="flex items-center">
+                <a class="p-4 border-b-2  {% if request.resolver_match.url_name == 'dashboard' %} border-blue-500 border-opacity-100 text-blue-500 {% else %} border-transparent hover:border-blue-500 border-opacity-0 hover:border-opacity-100 hover:text-blue-500 text-blue-900 {% endif %} duration-200 cursor-pointer" href="{% url "dashboard" %}">Dashboard</a>     
+                <a class="p-4 border-b-2  {% if request.resolver_match.url_name == 'listar_pedidos' %} border-blue-500 border-opacity-100 text-blue-500 {% else %} border-transparent hover:border-blue-500 border-opacity-0 hover:border-opacity-100 hover:text-blue-500 text-blue-900 {% endif %} duration-200 cursor-pointer" href="{% url "listar_pedidos" %}">Pedidos</a>
+                <a class="p-4 border-b-2  {% if request.resolver_match.url_name == 'listar_clientes' %} border-blue-500 border-opacity-100 text-blue-500 {% else %} border-transparent hover:border-blue-500 border-opacity-0 hover:border-opacity-100 hover:text-blue-500 text-blue-900 {% endif %} duration-200 cursor-pointer" href="{% url "listar_clientes" %}">Clientes</a>
+                <a class="p-4 border-b-2  {% if request.resolver_match.url_name == 'listar_productos' %} border-blue-500 border-opacity-100 text-blue-500 {% else %} border-transparent hover:border-blue-500 border-opacity-0 hover:border-opacity-100 hover:text-blue-500 text-blue-900 {% endif %} duration-200 cursor-pointer" href="{% url "listar_productos" %}">Productos</a>
+            </div>
+        </nav>
+
+        <div class="w-3/12 flex justify-end">
+            {% comment %} boton de logout {% endcomment %}
+            <a href="{% url 'logout' %}" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md duration-200">
+                Cerrar sesión
+                </a>
+        </div>
+    </nav>

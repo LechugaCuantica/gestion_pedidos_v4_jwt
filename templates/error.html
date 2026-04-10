@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block nav %}{% endblock nav %} {% block content %}
+<div class="flex items-center justify-center min-h-screen">
+    <div class="text-center px-6">
+
+        <!-- Código del error -->
+        <h1 class="text-8xl font-extrabold text-blue-600 tracking-tight">
+            {{status_code}}
+        </h1>
+
+        <!-- Línea decorativa -->
+        <div class="w-24 h-1 bg-blue-600 mx-auto my-6 rounded-full"></div>
+
+        <!-- Título -->
+        <h2 class="text-2xl font-semibold text-gray-800 mb-3">
+            {{title}}
+        </h2>
+
+        <!-- Descripción -->
+        <p class="text-gray-500 max-w-md mx-auto mb-8">
+            {{description}}
+        </p>
+
+        <!-- Botones -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+
+            <a href="{% url "login" %}"
+               class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium transition duration-300 shadow-md hover:shadow-lg">
+                Volver al inicio
+            </a>
+
+            <button onclick="history.back()"
+                    class="border cursor-pointer border-blue-600 text-blue-600 hover:bg-blue-50 px-6 py-3 rounded-xl font-medium transition duration-300">
+                Regresar
+            </button>
+
+        </div>
+
+        <!-- Icono decorativo -->
+        <div class="mt-12">
+            <svg class="w-32 mx-auto text-blue-200" fill="none" stroke="currentColor" stroke-width="1.5"
+                 viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M9.75 9.75L14.25 14.25M14.25 9.75L9.75 14.25M21 12A9 9 0 1112 3a9 9 0 019 9z"/>
+            </svg>
+        </div>
+
+    </div>
+</div>
+{% endblock content %}
