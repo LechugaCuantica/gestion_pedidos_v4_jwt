@@ -2,6 +2,12 @@ from django.http import HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
 import requests
 from requests import exceptions
+import dotenv
+import os
+
+dotenv.load_dotenv()
+
+URL = os.getenv('API_URL')
 
 class AuthMiddleware:
     def __init__(self, get_response):
@@ -15,9 +21,8 @@ class AuthMiddleware:
                 token = request.COOKIES.get('token')
                 # Si existe el token 
                 if token:
-                    url = 'http://127.0.0.1:4000/auth'
                     # Hacemos la petición
-                    response = requests.get(url, cookies={'token': token})
+                    response = requests.get(f"{URL}/auth", cookies={'token': token})
                     # Si la respuesta es correcta cargamos la vista de la ruta
                     if response.status_code == 200:
                         return self.get_response(request)

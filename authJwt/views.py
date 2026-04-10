@@ -5,17 +5,21 @@ from django.shortcuts import redirect, render
 import requests
 from requests import exceptions
 from authJwt.forms import LoginForm
+import os
+import dotenv
+
+dotenv.load_dotenv()
+
+URL = os.getenv('API_URL')
 
 # Create your views here.
 def login(request: HttpRequest):
     try: 
         if (request.method == 'POST'):
             form = LoginForm(request.POST)
-            if (form.is_valid()):
-                # URL del la api
-                url = 'http://127.0.0.1:4000/login'
+            if (form.is_valid()):               
                 # Hacemos la petición con la cookies de la app
-                response = requests.post(url, data=form.cleaned_data, cookies=request.COOKIES)
+                response = requests.post(f"{URL}/login", data=form.cleaned_data, cookies=request.COOKIES)
                 if response.status_code == 200:
                     # Si es correcto el seteamos el token el las cookies de la app
                     django_response = redirect('dashboard')
@@ -30,9 +34,8 @@ def login(request: HttpRequest):
             token = request.COOKIES.get('token')
             # Si existe el token
             if token:
-                url = 'http://127.0.0.1:4000/auth'
                 # Hacemos la petición para verificar si es válido
-                response = requests.get(url, cookies={'token': token})
+                response = requests.get(f"{URL}/auth", cookies={'token': token})
                 
                 # Si es correcta redireccionamos al dashboard sin necesidad del login
                 if response.status_code == 200:
@@ -47,9 +50,8 @@ def login(request: HttpRequest):
         return render(request, 'authJwt/login.html', {'form': form, 'error': {"detail": {"message": 'Actualmente el servicio de autenticación no está disponible. Intente mas tarde.'}}})
 
 def logout(request: HttpRequest):
-    url = 'http://127.0.0.1:4000/logout'
     # Hacemos la petición  para eliminar la cookie del token
-    response = requests.get(url, cookies={'token': request.COOKIES.get('token')})
+    response = requests.get(f"{URL}/logout", cookies={'token': request.COOKIES.get('token')})
     # Eliminamos la cookie del token de la app
     django_response = redirect("/")
     django_response.delete_cookie('token')

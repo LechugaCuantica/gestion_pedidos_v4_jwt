@@ -12,10 +12,17 @@ from pedidos.models import DetallePedido, Pedidos
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from django.db import models
+import dotenv
+import os
+
+dotenv.load_dotenv()
 
 from productos.models import Productos
 
-locale.setlocale(locale.LC_ALL, 'C.UTF-8')
+if os.getenv('DEBUG') == 'False':
+    locale.setlocale(locale.LC_ALL, 'C.UTF-8')
+else:
+    locale.setlocale(locale.LC_ALL, 'es_ES.UTF-8')
 # Create your views here.
 
 def listar_pedidos(request: HttpRequest):
