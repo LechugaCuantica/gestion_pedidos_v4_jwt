@@ -36,6 +36,8 @@ ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.railway.app",
+    # render
+    'https://*.onrender.com'
 ]
 
 
