@@ -1,1 +1,1 @@
-web: gunicorn tu_proyecto.wsgi
+web: python manage.py tailwind build && python manage.py collectstatic --noinput && gunicorn tu_proyecto.wsgi
