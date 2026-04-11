@@ -16,7 +16,8 @@
       <div class="flex flex-col md:flex-row md:items-center md:justify-between p-5 border-b border-slate-200 gap-4">
         <h2 class="text-lg font-semibold text-blue-800">Lista de pedidos</h2>
       </div>
-        <table class="min-w-full leading-normal">
+      <div class="overflow-x-auto">
+        <table class="min-w-full leading-normal ">
           <thead class="bg-gray-50">
             <tr>
               <th
@@ -122,6 +123,7 @@
             {% endfor %}
           </tbody>
         </table>
+        </div>
         <div
           class="px-5 bg-white py-5 rounded-b-xl flex flex-col xs:flex-row items-end xs:justify-between"
         >
