@@ -58,9 +58,7 @@ INSTALLED_APPS = [
 ]
 
 if DEBUG:
-    INSTALLED_APPS += [
-        'django_browser_reload',
-    ]
+    INSTALLED_APPS += ['django_browser_reload',]
 
 TAILWIND_APP_NAME = 'theme'
 

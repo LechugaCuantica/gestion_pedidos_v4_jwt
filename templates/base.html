@@ -1,8 +1,7 @@
 {% load static  %}
 {% load tailwind_tags %}
-{% load django_browser_reload %}
-{% if debug %}
-    {% django_browser_reload_script %}
+{% if settings.DEBUG %}
+    {% include "django_browser_reload.html" %}
 {% endif %}
 <!doctype html>
 <html lang="en">

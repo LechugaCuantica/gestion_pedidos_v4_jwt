@@ -1,7 +1,7 @@
 from datetime import date
 from io import BytesIO
-import locale
 
+from babel.numbers import format_currency
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.core.paginator import Paginator
@@ -12,23 +12,7 @@ from pedidos.models import DetallePedido, Pedidos
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from django.db import models
-import dotenv
-import os
-
-dotenv.load_dotenv()
-
 from productos.models import Productos
-
-def set_spanish_locale():
-    for loc in ['es_ES.UTF-8', 'es_ES', 'C.UTF-8', 'C']:
-        try:
-            locale.setlocale(locale.LC_ALL, loc)
-            print(f"Locale usado: {loc}")
-            break
-        except locale.Error:
-            continue
-
-set_spanish_locale()
 # Create your views here.
 
 def listar_pedidos(request: HttpRequest):
@@ -136,28 +120,28 @@ def dashboard(request: HttpRequest):
     if promedio_pedido_hoy is None:
         promedio_pedido_hoy = 0
         
-    promedio_pedido_hoy = locale.currency(promedio_pedido_hoy, grouping=True)
+    promedio_pedido_hoy = format_currency(promedio_pedido_hoy, 'COP', locale='es_CO')
     
     total_ventas_hoy = DetallePedido.objects.filter(pedido_id__fecha=date.today()).aggregate(models.Sum('subtotal')).get('subtotal__sum')
     
     if total_ventas_hoy is None:
         total_ventas_hoy = 0
     
-    total_ventas_hoy = locale.currency(total_ventas_hoy, grouping=True)
+    total_ventas_hoy = format_currency(total_ventas_hoy, 'COP', locale='es_CO')
 
     total_ventas_mes = DetallePedido.objects.filter(pedido_id__fecha__month=date.today().month).aggregate(models.Sum('subtotal')).get('subtotal__sum')
     
     if total_ventas_mes is None:
         total_ventas_mes = 0
     
-    total_ventas_mes = locale.currency(total_ventas_mes, grouping=True)
+    total_ventas_mes = format_currency(total_ventas_mes, 'COP', locale='es_CO')
    
     total_ventas = DetallePedido.objects.aggregate(models.Sum('subtotal')).get('subtotal__sum')
     
     if total_ventas is None:
         total_ventas = 0
     
-    total_ventas = locale.currency(total_ventas, grouping=True)
+    total_ventas = format_currency(total_ventas, 'COP', locale='es_CO')
     
     # Productos
     total_productos = Productos.objects.count()
