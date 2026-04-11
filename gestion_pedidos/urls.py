@@ -18,10 +18,10 @@ from django.contrib import admin
 from django.shortcuts import render
 from django.urls import include, path
 
+from gestion_pedidos import settings
 from pedidos.views import dashboard
 
 urlpatterns = [
-    path("__reload__/", include("django_browser_reload.urls")),
     path('admin/', admin.site.urls),
     path('', include('authJwt.urls')),
     path('dashboard/', dashboard, name='dashboard'),
@@ -29,3 +29,8 @@ urlpatterns = [
     path('dashboard/productos/', include('productos.urls')),
     path('dashboard/pedidos/', include('pedidos.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        path("__reload__/", include("django_browser_reload.urls")),
+    ]
