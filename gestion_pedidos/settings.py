@@ -42,7 +42,6 @@ CSRF_TRUSTED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'django_browser_reload',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,6 +56,11 @@ INSTALLED_APPS = [
     'pedidos',
     'authJwt',
 ]
+
+if DEBUG:
+    INSTALLED_APPS += [
+        'django_browser_reload',
+    ]
 
 TAILWIND_APP_NAME = 'theme'
 
